@@ -373,21 +373,21 @@ const CREDITO_FOTOS = "Fotos: CDC, DPDx Laboratory Identification of Parasites o
 // Caso 1: P. falciparum grave. El paciente empeora con cada hora sin artesunato.
 CASOS.push({
   id: "c1", titulo: "Fiebre y confusión al volver de Nigeria", especie: "P. falciparum",
-  paciente: "Daniel, 28 años", inicio: { s: 55, b: 35, c: 60, a: 65 },
+  paciente: "Rodrigo, 28 años", inicio: { s: 55, b: 35, c: 60, a: 65 },
   deterioro: 4, sintomas: ["fiebre"],
   pasos: [
     { id: "triaje", tipo: "eleccion", rol: "enf", h: 0.5,
-      dice: "Llegó Daniel, de 28 años, con su esposa Ana. Volvió hace 12 días de trabajar 3 meses en Nigeria. Lleva 4 días con fiebre alta, escalofríos y dolor de cabeza. Hace una hora lo notaron confundido y tuvo una convulsión en la sala de espera.",
+      dice: "Llegó Rodrigo, de 28 años, con su esposa Ana. Volvió hace 12 días de trabajar 3 meses en Nigeria. Lleva 4 días con fiebre alta, escalofríos y dolor de cabeza. Hace una hora lo notaron confundido y tuvo una convulsión en la sala de espera.",
       signos: ["T 40.1 °C", "FC 124", "PA 92/58", "FR 26", "Glasgow 11"],
       pregunta: "¿Qué es lo primero que piensas?",
       ops: [
         { t: "Fiebre + viaje a zona endémica: sospecho malaria y pido estudio urgente", ok: true, ef: { c: 5 },
           fb: "Fiebre con antecedente de viaje a zona endémica es malaria hasta demostrar lo contrario. Con confusión y convulsión, además, es una urgencia." },
         { t: "Parece viral: antipirético y que regrese si sigue la fiebre", ef: { s: -15, c: -15, a: 15, h: 3 },
-          cons: { titulo: "Daniel regresa en ambulancia", escena: "Tres horas después Ana vuelve gritando: Daniel convulsionó otra vez en el estacionamiento y ya no responde bien.",
-            porque: "Fiebre + viaje a zona endémica obliga a descartar malaria el mismo día. Daniel ya tenía datos de alarma (confusión, convulsión, presión baja): mandarlo a casa retrasó el diagnóstico de una enfermedad que puede matar en horas." } },
+          cons: { titulo: "Rodrigo regresa en ambulancia", escena: "Tres horas después Ana vuelve gritando: Rodrigo convulsionó otra vez en el estacionamiento y ya no responde bien.",
+            porque: "Fiebre + viaje a zona endémica obliga a descartar malaria el mismo día. Rodrigo ya tenía datos de alarma (confusión, convulsión, presión baja): mandarlo a casa retrasó el diagnóstico de una enfermedad que puede matar en horas." } },
         { t: "Es meningitis: punción lumbar antes que cualquier otra cosa", ef: { s: -6, a: 8, h: 1.5 },
-          cons: { titulo: "Se pierde hora y media", escena: "Mientras esperan el material para la punción, la fiebre sube a 40.6 °C y Daniel está más somnoliento.",
+          cons: { titulo: "Se pierde hora y media", escena: "Mientras esperan el material para la punción, la fiebre sube a 40.6 °C y Rodrigo está más somnoliento.",
             porque: "Pensar en meningitis no está mal, pero el viaje a Nigeria hace que la malaria sea la primera sospecha. La gota gruesa se hace en minutos y no debe esperar a otros estudios." } }
       ] },
 
@@ -401,12 +401,12 @@ CASOS.push({
           cons: { titulo: "Ana se siente engañada", escena: "Media hora después Ana escucha a una enfermera decir «malaria grave». Te reclama: «¡Me dijo que no era nada!» y pide hablar con otro médico.",
             porque: "Minimizar un cuadro grave destruye la confianza en cuanto aparece la verdad. La comunicación debe ser honesta, clara y con un plan." } },
         { t: "«Ahorita no puedo hablar, espere afuera.»", ef: { c: -10, a: 15 },
-          cons: { titulo: "La angustia crece", escena: "Ana se queda sola en la sala de espera, llama a toda la familia y llegan seis personas preguntando a gritos por Daniel.",
+          cons: { titulo: "La angustia crece", escena: "Ana se queda sola en la sala de espera, llama a toda la familia y llegan seis personas preguntando a gritos por Rodrigo.",
             porque: "Treinta segundos de explicación ahorran mucho caos. La ansiedad de la familia también es parte de la atención." } }
       ] },
 
     { id: "estudio", tipo: "eleccion", rol: "qfb", h: 0.5,
-      dice: "Aquí laboratorio. Ya tengo la muestra de sangre de Daniel en tubo con EDTA. ¿Qué le corro?",
+      dice: "Aquí laboratorio. Ya tengo la muestra de sangre de Rodrigo en tubo con EDTA. ¿Qué le corro?",
       pregunta: "¿Qué estudio pides para confirmar?",
       ops: [
         { t: "Gota gruesa y frotis delgado teñidos con Giemsa", ok: true,
@@ -414,10 +414,10 @@ CASOS.push({
         { t: "Solo prueba rápida de antígeno", nivel: "aceptable", ef: { h: 0.5 },
           fb: "Salió positiva para P. falciparum, pero no da la parasitemia, que aquí define la gravedad. Igual vas a necesitar el frotis." },
         { t: "PCR y esperar el resultado", ef: { s: -8, a: 10, h: 3 },
-          cons: { titulo: "Tres horas de espera", escena: "La PCR se manda a otro laboratorio. Mientras tanto Daniel deja de abrir los ojos cuando lo llaman.",
+          cons: { titulo: "Tres horas de espera", escena: "La PCR se manda a otro laboratorio. Mientras tanto Rodrigo deja de abrir los ojos cuando lo llaman.",
             porque: "La PCR es complementaria: sirve si la morfología es dudosa, si hay infección mixta o parasitemia muy baja. En una urgencia, el microscopio responde en minutos." } },
         { t: "Urocultivo y radiografía de tórax", ef: { s: -8, a: 8, h: 2 },
-          cons: { titulo: "Estudios que no buscan al parásito", escena: "Dos horas después los resultados son normales y no sabes más que al principio. Daniel sigue empeorando.",
+          cons: { titulo: "Estudios que no buscan al parásito", escena: "Dos horas después los resultados son normales y no sabes más que al principio. Rodrigo sigue empeorando.",
             porque: "Plasmodium vive dentro de los eritrocitos: se busca en sangre, con gota gruesa y frotis." } }
       ] },
 
@@ -425,7 +425,7 @@ CASOS.push({
       dice: "Vamos a preparar las laminillas. Ordena los pasos tocándolos uno por uno.",
       pregunta: "Orden correcto para la gota gruesa y el frotis:",
       items: [
-        { t: "Rotular el portaobjetos con nombre y fecha", siMal: "Al final hay tres laminillas sin nombre en la charola y nadie sabe cuál es de Daniel." },
+        { t: "Rotular el portaobjetos con nombre y fecha", siMal: "Al final hay tres laminillas sin nombre en la charola y nadie sabe cuál es de Rodrigo." },
         { t: "Poner una gota pequeña para el frotis y 2–3 gotas para la gota gruesa", siMal: "Sin la cantidad correcta, la gota gruesa queda tan delgada que pierde su ventaja: detectar con más sensibilidad." },
         { t: "Extender el frotis con otro portaobjetos a unos 45° y extender la gota gruesa en círculo", siMal: "Si no se extiende bien, el frotis queda grueso y los eritrocitos se enciman: no se distingue su forma ni su tamaño." },
         { t: "Dejar secar al aire por completo", siMal: "Teñir sangre húmeda hace que la gota gruesa se desprenda del vidrio al lavarla." },
@@ -489,14 +489,14 @@ CASOS.push({
         porque: "Se cuentan los eritrocitos parasitados, no los parásitos: un eritrocito con dos anillos cuenta una vez. Revisa con cuidado los anillos pequeños del borde." } },
 
     { id: "grave", tipo: "eleccion", rol: "enf", h: 0.25,
-      dice: "Doctor, Daniel sigue somnoliento, el Glasgow bajó a 10 y la presión está en 88/54.",
+      dice: "Doctor, Rodrigo sigue somnoliento, el Glasgow bajó a 10 y la presión está en 88/54.",
       signos: ["T 39.6 °C", "FC 130", "PA 88/54", "Glasgow 10", "Parasitemia 8 %"],
       pregunta: "¿Cómo clasificas el cuadro?",
       ops: [
         { t: "Malaria grave (cerebral) por P. falciparum", ok: true,
           fb: "Criterios de gravedad: alteración de la conciencia, convulsiones y parasitemia ≥5 %. La malaria cerebral se debe al secuestro de eritrocitos parasitados en la microcirculación cerebral, no a que el parásito invada neuronas." },
         { t: "Malaria no complicada", ef: { s: -10, h: 0.5 },
-          cons: { titulo: "Lo tratas como leve", escena: "Lo dejas en observación general. Una hora después la enfermera corre: Daniel está convulsionando otra vez.",
+          cons: { titulo: "Lo tratas como leve", escena: "Lo dejas en observación general. Una hora después la enfermera corre: Rodrigo está convulsionando otra vez.",
             porque: "Confusión, convulsión y 8 % de parasitemia son criterios de malaria grave: necesita tratamiento IV urgente." } },
         { t: "Recaída por hipnozoítos", ef: { s: -5, h: 0.25 },
           cons: { titulo: "Concepto equivocado", escena: "El adscrito te detiene: «¿Recaída? Es su primer episodio, y además es falciparum».",
@@ -505,39 +505,39 @@ CASOS.push({
 
     { id: "receta", tipo: "farmaco", rol: "med", trata: true,
       dice: "Hay que indicar el tratamiento ya. Elige un antipalúdico y, si quieres, adyuvantes.",
-      pregunta: "Indicación para Daniel:",
+      pregunta: "Indicación para Rodrigo:",
       farmacos: [
         { id: "artesunato", nombre: "Artesunato IV", detalle: "Derivado de artemisinina", nivel: "mejor", ef: { s: 30, a: -15, c: 8 },
           fb: "Es el tratamiento de elección en malaria grave: baja la parasitemia más rápido y reduce la mortalidad. Ojo: puede dar hemólisis tardía, por eso se vigila la hemoglobina varias semanas." },
         { id: "quinina", nombre: "Quinina IV", detalle: "Alcaloide de la quina", nivel: "aceptable", ef: { s: 20, a: -8 },
           fb: "Funciona si no hay artesunato, pero es inferior y tiene más efectos adversos.",
           adverso: { tipo: "hipoglucemia", ef: { s: -10, b: -15, a: 10 },
-            cons: { titulo: "Hipoglucemia y cinconismo", escena: "A las 3 horas Daniel suda frío, tiembla y la glucosa marca 42 mg/dL. Al despertar dice que le zumban los oídos.",
+            cons: { titulo: "Hipoglucemia y cinconismo", escena: "A las 3 horas Rodrigo suda frío, tiembla y la glucosa marca 42 mg/dL. Al despertar dice que le zumban los oídos.",
               porque: "La quinina estimula la liberación de insulina (hipoglucemia) y causa cinconismo: zumbido de oídos, náusea, mareo y visión borrosa. Con quinina IV se pone dextrosa y se mide la glucosa seguido." } } },
         { id: "artemeter", nombre: "Arteméter-lumefantrina oral", detalle: "ACT por vía oral", nivel: "mala", ef: { s: -12, a: 10, h: 1 },
-          cons: { titulo: "Vomita la pastilla", escena: "Daniel no puede tragar bien por la somnolencia; vomita la primera dosis y la enfermera teme que se broncoaspire.",
+          cons: { titulo: "Vomita la pastilla", escena: "Rodrigo no puede tragar bien por la somnolencia; vomita la primera dosis y la enfermera teme que se broncoaspire.",
             porque: "Las ACT orales son para malaria no complicada. En malaria grave el paciente puede no tragar ni absorber: se usa artesunato IV y la ACT oral se da después, cuando ya tolera la vía oral." } },
         { id: "cloroquina", nombre: "Cloroquina oral", detalle: "4-aminoquinolina", nivel: "mala", ef: { s: -12, a: 8, h: 1 },
-          cons: { titulo: "No responde", escena: "Seis horas después la parasitemia sigue en 8 % y Daniel está peor.",
+          cons: { titulo: "No responde", escena: "Seis horas después la parasitemia sigue en 8 % y Rodrigo está peor.",
             porque: "P. falciparum de África es resistente a cloroquina en casi todas las regiones, y además la vía oral no sirve en malaria grave." } },
         { id: "primaquina", nombre: "Primaquina oral", detalle: "8-aminoquinolina", nivel: "mala", ef: { s: -15, a: 10, h: 1 },
-          cons: { titulo: "Fármaco para otra fase", escena: "La parasitemia no baja y Daniel sigue convulsionando.",
+          cons: { titulo: "Fármaco para otra fase", escena: "La parasitemia no baja y Rodrigo sigue convulsionando.",
             porque: "La primaquina elimina hipnozoítos hepáticos de P. vivax y P. ovale. No trata la fase sanguínea, y P. falciparum no tiene hipnozoítos." } }
       ],
       adyuvantes: ["paracetamol", "dextrosa", "ondansetron", "aspirina"] },
 
     { id: "seguimiento", tipo: "eleccion", rol: "enf", h: 24, fin: true,
-      dice: "A las 24 horas Daniel despertó, está orientado y ya come. La parasitemia bajó a 0.5 %. Ana sonríe por primera vez.",
+      dice: "A las 24 horas Rodrigo despertó, está orientado y ya come. La parasitemia bajó a 0.5 %. Ana sonríe por primera vez.",
       signos: ["T 37.4 °C", "FC 92", "PA 110/70", "Glasgow 15"],
       pregunta: "¿Qué sigue?",
       ops: [
         { t: "Completar con un esquema oral de ACT, repetir frotis hasta que salga negativo y vigilar la hemoglobina por hemólisis tardía", ok: true, ef: { s: 10, b: 20, c: 10, a: -10 },
           fb: "Así se cierra: IV mientras está grave, luego esquema oral completo, control con frotis y vigilancia de hemoglobina varias semanas después del artesunato." },
         { t: "Agregar primaquina 14 días para evitar recaídas", ef: { b: -8, c: -5 },
-          cons: { titulo: "Tratamiento innecesario", escena: "Daniel tiene náusea y dolor abdominal por un fármaco que no necesitaba.",
+          cons: { titulo: "Tratamiento innecesario", escena: "Rodrigo tiene náusea y dolor abdominal por un fármaco que no necesitaba.",
             porque: "P. falciparum no forma hipnozoítos: no hay recaídas hepáticas que prevenir con 14 días de primaquina." } },
         { t: "Darlo de alta sin más tratamiento", ef: { s: -15, c: -10, h: 48 },
-          cons: { titulo: "Vuelve la fiebre", escena: "Dos días después Daniel regresa con fiebre: la infección no se terminó de eliminar.",
+          cons: { titulo: "Vuelve la fiebre", escena: "Dos días después Rodrigo regresa con fiebre: la infección no se terminó de eliminar.",
             porque: "Después del artesunato IV se debe completar un esquema oral. Si no, la infección puede regresar (recrudescencia)." } }
       ] }
   ],
@@ -555,46 +555,46 @@ CASOS.push({
 // Caso 2: P. vivax con recaída. Tiene una rama sin vuelta atrás: dar primaquina sin el resultado de G6PD.
 CASOS.push({
   id: "c2", titulo: "La fiebre que volvió siete meses después", especie: "P. vivax",
-  paciente: "Lucía, 34 años", inicio: { s: 70, b: 45, c: 45, a: 50 },
+  paciente: "Mariana, 34 años", inicio: { s: 70, b: 45, c: 45, a: 50 },
   deterioro: 0, sintomas: ["fiebre"],
   pasos: [
     { id: "historia", tipo: "eleccion", rol: "enf", h: 0.5,
-      dice: "Pasó Lucía, de 34 años, bióloga. Trabajó en la selva de Chiapas hasta hace 8 meses. Hace 7 meses tuvo malaria por P. vivax y le dieron solo cloroquina 3 días. No ha vuelto a ninguna zona con malaria. Ahora tiene fiebre un día sí y otro no, con escalofríos fuertes y sudoración.",
+      dice: "Pasó Mariana, de 34 años, bióloga. Trabajó en la selva de Chiapas hasta hace 8 meses. Hace 7 meses tuvo malaria por P. vivax y le dieron solo cloroquina 3 días. No ha vuelto a ninguna zona con malaria. Ahora tiene fiebre un día sí y otro no, con escalofríos fuertes y sudoración.",
       signos: ["T 39.2 °C", "FC 104", "PA 112/70", "Bazo palpable"],
       pregunta: "¿Qué explica que la malaria regrese?",
       ops: [
         { t: "Recaída: se reactivaron hipnozoítos que quedaron en el hígado", ok: true,
           fb: "P. vivax deja hipnozoítos hepáticos latentes. Si solo se trata la fase sanguínea, pueden despertar meses o años después." },
         { t: "Reinfección por otro piquete de mosquito", ef: { c: -5, h: 0.5 },
-          cons: { titulo: "No cuadra con la historia", escena: "Lucía te corrige: «Le dije que no he salido de la ciudad desde que regresé».",
-            porque: "La reinfección necesita una nueva exposición al mosquito. Lucía no ha vuelto a zona endémica." } },
+          cons: { titulo: "No cuadra con la historia", escena: "Mariana te corrige: «Le dije que no he salido de la ciudad desde que regresé».",
+            porque: "La reinfección necesita una nueva exposición al mosquito. Mariana no ha vuelto a zona endémica." } },
         { t: "Recrudescencia de la infección en sangre", ef: { c: -3, h: 0.5 },
           cons: { titulo: "Concepto confundido", escena: "El adscrito pregunta: «¿Y qué tratamiento le faltó la primera vez?».",
             porque: "Recrudescencia es parasitemia sanguínea que nunca se eliminó y vuelve a subir. La pista aquí es otra: nunca recibió tratamiento contra las formas hepáticas (hipnozoítos)." } }
       ] },
 
     { id: "enojo", tipo: "eleccion", rol: "pac", h: 0.1,
-      dice: "Lucía está molesta: «¿Otra vez? ¿Me trataron mal la primera vez? Ya no sé si confiar en los médicos».",
+      dice: "Mariana está molesta: «¿Otra vez? ¿Me trataron mal la primera vez? Ya no sé si confiar en los médicos».",
       pregunta: "¿Qué le dices?",
       ops: [
         { t: "Explicarle los hipnozoítos con honestidad y el plan para eliminarlos esta vez", ok: true, ef: { c: 18, a: -12 },
           fb: "Entender por qué volvió la enfermedad le devuelve el control. La confianza también predice que termine los 14 días de tratamiento." },
         { t: "«La culpa es del médico que la atendió antes»", ef: { c: -8, a: 10 },
-          cons: { titulo: "Más desconfianza", escena: "Lucía se pone más nerviosa: «Entonces, ¿cómo sé que ustedes sí lo van a hacer bien?».",
+          cons: { titulo: "Más desconfianza", escena: "Mariana se pone más nerviosa: «Entonces, ¿cómo sé que ustedes sí lo van a hacer bien?».",
             porque: "Culpar a otros no resuelve nada y hace que el paciente desconfíe de todo el sistema. Explica el porqué biológico y el plan." } },
         { t: "«No sé, a veces pasa»", ef: { c: -12, a: 8 },
-          cons: { titulo: "Respuesta vacía", escena: "Lucía busca en el celular «malaria regresa» y se asusta con lo que lee.",
+          cons: { titulo: "Respuesta vacía", escena: "Mariana busca en el celular «malaria regresa» y se asusta con lo que lee.",
             porque: "El paciente necesita una explicación: P. vivax forma hipnozoítos que causan recaídas, y existe tratamiento para eliminarlos." } }
       ] },
 
     { id: "fijar", tipo: "eleccion", rol: "qfb", h: 0.5,
-      dice: "Ya hice la gota gruesa y el frotis de Lucía y están secos. Tengo el metanol en la mano.",
+      dice: "Ya hice la gota gruesa y el frotis de Mariana y están secos. Tengo el metanol en la mano.",
       pregunta: "¿Qué fijas con metanol?",
       ops: [
         { t: "Solo el frotis delgado", ok: true,
           fb: "El frotis se fija para conservar el eritrocito y ver su tamaño y forma. La gota gruesa no se fija: el agua del Giemsa lisa sus eritrocitos y quedan los parásitos concentrados." },
         { t: "Las dos laminillas", ef: { a: 6, c: -4, h: 1 },
-          cons: { titulo: "Gota gruesa inservible", escena: "Al microscopio la gota gruesa es una capa roja de eritrocitos encimados. Hay que volver a picar a Lucía.",
+          cons: { titulo: "Gota gruesa inservible", escena: "Al microscopio la gota gruesa es una capa roja de eritrocitos encimados. Hay que volver a picar a Mariana.",
             porque: "Si el metanol fija la gota gruesa, los eritrocitos ya no se lisan y tapan a los parásitos." } },
         { t: "Ninguna, no hace falta", ef: { a: 4, h: 1 },
           cons: { titulo: "Frotis deformado", escena: "Al teñir, los eritrocitos del frotis se lisan y ya no puedes saber si están agrandados.",
@@ -632,21 +632,21 @@ CASOS.push({
       ] },
 
     { id: "sangre", tipo: "farmaco", rol: "med",
-      dice: "Lucía no tiene datos de gravedad. Primero hay que tratar la fase sanguínea. Elige el antipalúdico y los adyuvantes.",
+      dice: "Mariana no tiene datos de gravedad. Primero hay que tratar la fase sanguínea. Elige el antipalúdico y los adyuvantes.",
       pregunta: "Tratamiento de la fase sanguínea:",
       farmacos: [
         { id: "cloroquina", nombre: "Cloroquina oral", detalle: "Esquema de 3 días", nivel: "mejor", ef: { s: 15, a: -8 },
           fb: "En México P. vivax sigue siendo sensible a cloroquina, y es el tratamiento sanguíneo habitual.",
           adverso: { tipo: "prurito", ef: { b: -15, a: 5, c: -4 },
-            cons: { titulo: "Comezón intensa", escena: "Esa noche Lucía no duerme: le pica todo el cuerpo y piensa en dejar las pastillas.",
+            cons: { titulo: "Comezón intensa", escena: "Esa noche Mariana no duerme: le pica todo el cuerpo y piensa en dejar las pastillas.",
               porque: "La comezón (prurito) es el efecto adverso más común de la cloroquina. Un antihistamínico la alivia y ayuda a que no abandone el tratamiento." } } },
         { id: "act", nombre: "Arteméter-lumefantrina oral", detalle: "ACT, 3 días con alimento graso", nivel: "mejor", ef: { s: 15, a: -8 },
           fb: "Las ACT también sirven para la fase sanguínea de P. vivax. Se toman con alimento con grasa para absorberse bien." },
         { id: "artesunato", nombre: "Artesunato IV", detalle: "Para malaria grave", nivel: "mala", ef: { b: -8, a: 10, c: -5 },
-          cons: { titulo: "Hospitalización innecesaria", escena: "Lucía queda internada con suero y vena canalizada sin necesitarlo. Pregunta asustada si está grave.",
-            porque: "El artesunato IV es para malaria grave. Lucía no tiene criterios de gravedad: basta el tratamiento oral." } },
+          cons: { titulo: "Hospitalización innecesaria", escena: "Mariana queda internada con suero y vena canalizada sin necesitarlo. Pregunta asustada si está grave.",
+            porque: "El artesunato IV es para malaria grave. Mariana no tiene criterios de gravedad: basta el tratamiento oral." } },
         { id: "primaquina", nombre: "Solo primaquina", detalle: "8-aminoquinolina", nivel: "mala", ef: { s: -10, b: -8, h: 24 },
-          cons: { titulo: "La fiebre sigue", escena: "Al día siguiente Lucía sigue con fiebre y escalofríos: la sangre sigue llena de parásitos.",
+          cons: { titulo: "La fiebre sigue", escena: "Al día siguiente Mariana sigue con fiebre y escalofríos: la sangre sigue llena de parásitos.",
             porque: "La primaquina va contra los hipnozoítos. El episodio agudo necesita primero el tratamiento de la fase sanguínea." } }
       ],
       adyuvantes: ["paracetamol", "antihistaminico", "ondansetron", "aspirina"] },
@@ -659,19 +659,19 @@ CASOS.push({
         { t: "Medir la actividad cuantitativa de G6PD", siMal: "Sin conocer la G6PD, la primaquina puede causar hemólisis grave." },
         { t: "Descartar embarazo", siMal: "La primaquina y la tafenoquina no se dan en el embarazo: pueden causar hemólisis en el feto." },
         { t: "Iniciar primaquina 14 días, con alimento", siMal: "Iniciarla antes de los estudios es arriesgado; tomarla en ayunas da más molestia gástrica." },
-        { t: "Explicar señales de alarma: orina oscura, piel amarilla, cansancio", siMal: "Si no conoce las señales de hemólisis, Lucía no sabrá cuándo regresar." }
+        { t: "Explicar señales de alarma: orina oscura, piel amarilla, cansancio", siMal: "Si no conoce las señales de hemólisis, Mariana no sabrá cuándo regresar." }
       ],
       fb: "Ese es el orden seguro: especie, G6PD, embarazo, fármaco y educación del paciente.",
       efMal: { h: 0.5, c: -3 },
       porque: "Primaquina y tafenoquina pueden causar hemólisis en personas con deficiencia de G6PD y no se usan en el embarazo, por eso los estudios van antes del fármaco." },
 
     { id: "prisa", tipo: "eleccion", rol: "enf", h: 2,
-      dice: "Doctor, ya me surtieron la primaquina de Lucía, pero el resultado de G6PD tarda dos horas más. ¿Se la doy ya para adelantar?",
+      dice: "Doctor, ya me surtieron la primaquina de Mariana, pero el resultado de G6PD tarda dos horas más. ¿Se la doy ya para adelantar?",
       pregunta: "¿Qué decides?",
       ops: [
         { t: "Esperar el resultado de G6PD", ok: true, ef: { c: 5 }, fb: "Dos horas de espera no cambian nada para la recaída, pero una hemólisis sí. Siempre se espera la G6PD." },
         { t: "Darla ya, total casi nadie tiene deficiencia", irreversible: true, ir: "hemolisis", ef: { s: -20, b: -20, a: 20, c: -15 },
-          cons: { titulo: "Hemólisis aguda", escena: "El resultado llega: G6PD deficiente. Al tercer día Lucía regresa pálida, con la piel amarilla y orina color refresco de cola. Su hemoglobina bajó de 12 a 7.5 g/dL.",
+          cons: { titulo: "Hemólisis aguda", escena: "El resultado llega: G6PD deficiente. Al tercer día Mariana regresa pálida, con la piel amarilla y orina color refresco de cola. Su hemoglobina bajó de 12 a 7.5 g/dL.",
             porque: "En la deficiencia de G6PD el eritrocito no puede defenderse del estrés oxidativo que causa la primaquina y se rompe (hemólisis). Por eso la G6PD se mide SIEMPRE antes." } }
       ] },
 
@@ -683,28 +683,28 @@ CASOS.push({
         { t: "Tafenoquina en dosis única, junto con la cloroquina", ok: true, ef: { s: 15, b: 15, a: -12, c: 8 },
           fb: "También es válida: dosis única (mejor adherencia), si la G6PD es normal y no hay embarazo. Se da junto con cloroquina." },
         { t: "Nada más: ya se le quitó la fiebre", ef: { s: -10, c: -8 },
-          cons: { titulo: "Recaída asegurada", escena: "Cinco meses después Lucía vuelve con fiebre cada tercer día. Ya no quiere saber nada de hospitales.",
+          cons: { titulo: "Recaída asegurada", escena: "Cinco meses después Mariana vuelve con fiebre cada tercer día. Ya no quiere saber nada de hospitales.",
             porque: "Sin tratamiento antirrecaída los hipnozoítos siguen en el hígado y la historia se repite." } },
         { t: "Doxiciclina", ef: { b: -5, c: -4 },
-          cons: { titulo: "No elimina hipnozoítos", escena: "Lucía toma doxiciclina una semana con náusea, para nada.", porque: "La doxiciclina no actúa sobre los hipnozoítos. Solo primaquina y tafenoquina los eliminan." } }
+          cons: { titulo: "No elimina hipnozoítos", escena: "Mariana toma doxiciclina una semana con náusea, para nada.", porque: "La doxiciclina no actúa sobre los hipnozoítos. Solo primaquina y tafenoquina los eliminan." } }
       ] },
 
     { id: "hemolisis", tipo: "eleccion", rol: "med", h: 1, rama: true,
-      dice: "Lucía tiene hemólisis por primaquina con G6PD deficiente. Hemoglobina 7.5 g/dL, sin dificultad para respirar.",
+      dice: "Mariana tiene hemólisis por primaquina con G6PD deficiente. Hemoglobina 7.5 g/dL, sin dificultad para respirar.",
       signos: ["Hb 7.5 g/dL", "Bilirrubina indirecta alta", "Orina oscura"],
       pregunta: "¿Qué haces primero?",
       ops: [
         { t: "Suspender la primaquina, hidratar y vigilar la hemoglobina", ok: true, ef: { s: 12, b: 10, a: -10, c: 6 },
           fb: "Suspender el fármaco detiene la hemólisis. Se hidrata para proteger el riñón y se valora transfusión solo si la anemia es grave o hay síntomas." },
         { t: "Seguir con la primaquina para terminar los 14 días", ef: { s: -25, b: -15, a: 15 },
-          cons: { titulo: "La hemólisis empeora", escena: "La hemoglobina cae a 5 g/dL; Lucía necesita transfusión urgente.", porque: "Con deficiencia de G6PD la primaquina diaria está contraindicada: cada dosis rompe más eritrocitos." } },
+          cons: { titulo: "La hemólisis empeora", escena: "La hemoglobina cae a 5 g/dL; Mariana necesita transfusión urgente.", porque: "Con deficiencia de G6PD la primaquina diaria está contraindicada: cada dosis rompe más eritrocitos." } },
         { t: "Cambiar a tafenoquina", ef: { s: -20, b: -10, a: 10 },
           cons: { titulo: "Mismo problema, más largo", escena: "La hemólisis continúa; la tafenoquina dura semanas en el cuerpo y no se puede retirar.",
             porque: "La tafenoquina también causa hemólisis en la deficiencia de G6PD y tiene vida media muy larga: está contraindicada." } }
       ] },
 
     { id: "despues", tipo: "eleccion", rol: "med", h: 24, rama: true, fin: true,
-      dice: "Lucía se estabilizó. Pero los hipnozoítos siguen en su hígado.",
+      dice: "Mariana se estabilizó. Pero los hipnozoítos siguen en su hígado.",
       pregunta: "¿Cómo prevenir nuevas recaídas con G6PD deficiente?",
       ops: [
         { t: "Valorarlo con infectología: esquema semanal de primaquina supervisado o vigilancia estrecha de recaídas", ok: true, ef: { c: 10, a: -8 },
@@ -727,18 +727,18 @@ CASOS.push({
 // Caso 3: P. malariae crónica con síndrome nefrótico. Parasitemia baja: se cuenta en gota gruesa.
 CASOS.push({
   id: "c3", titulo: "Piernas hinchadas y fiebre cada cuatro días", especie: "P. malariae",
-  paciente: "Samuel, 52 años", inicio: { s: 65, b: 40, c: 55, a: 45 },
+  paciente: "Ernesto, 52 años", inicio: { s: 65, b: 40, c: 55, a: 45 },
   deterioro: 0, sintomas: ["fiebre"],
   pasos: [
     { id: "patron", tipo: "eleccion", rol: "enf", h: 0.5,
-      dice: "Llegó Samuel, de 52 años. Nació en Ghana y vive en Veracruz desde hace 3 años; no ha viajado desde entonces. Trae los párpados y las piernas hinchados y orina con espuma. Le da fiebre un día, luego pasan dos días sin fiebre y al cuarto día regresa.",
+      dice: "Llegó Ernesto, de 52 años. Nació en Ghana y vive en Veracruz desde hace 3 años; no ha viajado desde entonces. Trae los párpados y las piernas hinchados y orina con espuma. Le da fiebre un día, luego pasan dos días sin fiebre y al cuarto día regresa.",
       signos: ["T 38.6 °C", "FC 96", "PA 138/86", "Edema ++"],
       pregunta: "¿Qué te dice ese patrón de fiebre?",
       ops: [
         { t: "Fiebre cuartana (ciclo de 72 h): orienta a P. malariae", ok: true,
           fb: "Correcto, aunque el patrón febril solo orienta y no basta para decidir la especie. Hay que confirmarla al microscopio." },
         { t: "Fiebre terciaria (ciclo de 48 h): orienta a P. vivax", ef: { h: 0.5 },
-          cons: { titulo: "Cuenta los días", escena: "Samuel cuenta con los dedos: «Lunes fiebre, martes y miércoles bien, jueves fiebre».",
+          cons: { titulo: "Cuenta los días", escena: "Ernesto cuenta con los dedos: «Lunes fiebre, martes y miércoles bien, jueves fiebre».",
             porque: "La terciaria da fiebre cada 48 h (día 1 y día 3). La cuartana, cada 72 h (día 1 y día 4): P. malariae." } },
         { t: "Si vive aquí hace 3 años, no puede ser malaria", ef: { s: -12, c: -8, h: 24 },
           cons: { titulo: "Se va sin diagnóstico", escena: "Lo mandas con un diurético. Una semana después regresa con más edema y la misma fiebre.",
@@ -746,16 +746,16 @@ CASOS.push({
       ] },
 
     { id: "miedo", tipo: "eleccion", rol: "pac", h: 0.1,
-      dice: "Samuel pregunta nervioso: «Mi hermano terminó en diálisis. ¿Me va a pasar lo mismo?»",
+      dice: "Ernesto pregunta nervioso: «Mi hermano terminó en diálisis. ¿Me va a pasar lo mismo?»",
       pregunta: "¿Qué le respondes?",
       ops: [
         { t: "«Vamos a buscar la causa. Si es malaria, se trata, y un especialista del riñón le dará seguimiento.»", ok: true, ef: { a: -12, c: 12 },
           fb: "Honesto y con plan. No prometes lo que no sabes, pero no lo dejas solo con el miedo." },
         { t: "«Tranquilo, con una pastilla queda como nuevo.»", ef: { c: -12, a: 6 },
-          cons: { titulo: "Promesa que no se cumple", escena: "Semanas después la proteinuria sigue y Samuel te dice: «Usted me dijo que con una pastilla quedaba bien».",
+          cons: { titulo: "Promesa que no se cumple", escena: "Semanas después la proteinuria sigue y Ernesto te dice: «Usted me dijo que con una pastilla quedaba bien».",
             porque: "La nefropatía por P. malariae puede no revertirse del todo aunque se elimine el parásito. No se debe prometer curación del riñón." } },
         { t: "«Eso lo verá el nefrólogo, yo no sé.»", ef: { c: -8, a: 12 },
-          cons: { titulo: "Se siente abandonado", escena: "Samuel se queda callado el resto de la consulta y no te dice que ya casi no orina.",
+          cons: { titulo: "Se siente abandonado", escena: "Ernesto se queda callado el resto de la consulta y no te dice que ya casi no orina.",
             porque: "Aunque otro especialista siga el caso, explicar qué se va a hacer ahora es parte de tu trabajo." } }
       ] },
 
@@ -781,7 +781,7 @@ CASOS.push({
         { t: "Gota gruesa revisada con cuidado + frotis delgado", ok: true,
           fb: "La gota gruesa concentra la sangre y detecta parasitemias bajas; el frotis permite ver la morfología." },
         { t: "Solo frotis delgado, unos cuantos campos", ef: { s: -6, c: -4, h: 24 },
-          cons: { titulo: "Falso negativo", escena: "El reporte dice «no se observan parásitos». Samuel se va y regresa una semana después igual.",
+          cons: { titulo: "Falso negativo", escena: "El reporte dice «no se observan parásitos». Ernesto se va y regresa una semana después igual.",
             porque: "Con parasitemia baja el frotis solo puede salir negativo aunque el parásito esté. Para detectar se usa la gota gruesa." } },
         { t: "Solo examen general de orina", ef: { h: 1 },
           cons: { titulo: "No busca al parásito", escena: "Confirma la proteinuria que ya sabías.", porque: "El parásito está en la sangre: gota gruesa y frotis." } }
@@ -802,7 +802,7 @@ CASOS.push({
       porque: "En la gota gruesa los eritrocitos se lisaron, así que los parásitos se cuentan contra los leucocitos." },
 
     { id: "gruesa", tipo: "microscopio", rol: "qfb", h: 0.25,
-      dice: "Gota gruesa de Samuel. Enfoca y busca con paciencia: hay pocos.",
+      dice: "Gota gruesa de Ernesto. Enfoca y busca con paciencia: hay pocos.",
       fotos: ["pmGruesa"], foco: 58,
       tarea: "Toca un parásito.",
       blancos: [{ f: 0, x: 30, y: 36, r: 8 }, { f: 0, x: 78, y: 60, r: 8 }, { f: 0, x: 87, y: 93, r: 6 }],
@@ -848,32 +848,32 @@ CASOS.push({
 
     { id: "receta", tipo: "farmaco", rol: "med", trata: true,
       dice: "La PCR confirmó P. malariae. Elige el antipalúdico y los adyuvantes.",
-      pregunta: "Tratamiento de Samuel:",
+      pregunta: "Tratamiento de Ernesto:",
       farmacos: [
         { id: "cloroquina", nombre: "Cloroquina oral", detalle: "Esquema de 3 días", nivel: "mejor", ef: { s: 18, a: -8 },
           fb: "P. malariae sigue siendo sensible a cloroquina.",
           adverso: { tipo: "prurito", ef: { b: -12, c: -4 },
-            cons: { titulo: "Comezón", escena: "Samuel se rasca toda la noche y pregunta si es alergia.",
+            cons: { titulo: "Comezón", escena: "Ernesto se rasca toda la noche y pregunta si es alergia.",
               porque: "El prurito por cloroquina es frecuente, sobre todo en personas de origen africano. Un antihistamínico lo alivia." } } },
         { id: "act", nombre: "Arteméter-lumefantrina oral", detalle: "ACT, 3 días con alimento graso", nivel: "mejor", ef: { s: 18, a: -8 },
           fb: "Las ACT también son válidas para P. malariae." },
         { id: "primaquina", nombre: "Primaquina 14 días", detalle: "Antirrecaída", nivel: "mala", ef: { b: -8, h: 24 },
-          cons: { titulo: "Fármaco sin objetivo", escena: "La fiebre cuartana sigue y Samuel tiene dolor abdominal por la primaquina.",
+          cons: { titulo: "Fármaco sin objetivo", escena: "La fiebre cuartana sigue y Ernesto tiene dolor abdominal por la primaquina.",
             porque: "P. malariae no forma hipnozoítos: no necesita primaquina, y la primaquina no trata la fase sanguínea." } },
         { id: "artesunato", nombre: "Artesunato IV", detalle: "Para malaria grave", nivel: "mala", ef: { b: -6, a: 8 },
-          cons: { titulo: "Hospitalización innecesaria", escena: "Samuel queda internado con vena canalizada y se angustia pensando que está muy grave.",
+          cons: { titulo: "Hospitalización innecesaria", escena: "Ernesto queda internado con vena canalizada y se angustia pensando que está muy grave.",
             porque: "No tiene criterios de malaria grave: basta el tratamiento oral." } }
       ],
       adyuvantes: ["paracetamol", "antihistaminico", "ibuprofeno"] },
 
     { id: "cierre", tipo: "eleccion", rol: "med", h: 24, fin: true,
       dice: "Una semana después la gota gruesa salió negativa. La proteinuria bajó un poco, pero sigue alta.",
-      pregunta: "¿Qué sigue para Samuel?",
+      pregunta: "¿Qué sigue para Ernesto?",
       ops: [
         { t: "Seguimiento con nefrología y controles de proteinuria; explicarle que el riñón puede no recuperarse del todo", ok: true, ef: { b: 15, c: 12, a: -10 },
           fb: "La nefropatía por P. malariae puede no revertirse aunque se elimine el parásito. Necesita seguimiento a largo plazo." },
         { t: "Alta definitiva: ya no tiene parásitos", ef: { s: -10, c: -8, a: 8 },
-          cons: { titulo: "El riñón sigue dañado", escena: "Meses después Samuel llega con más edema y la creatinina alta.",
+          cons: { titulo: "El riñón sigue dañado", escena: "Meses después Ernesto llega con más edema y la creatinina alta.",
             porque: "Eliminar el parásito no garantiza que el riñón sane. El síndrome nefrótico necesita su propio seguimiento." } }
       ] }
   ],
