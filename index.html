@@ -138,6 +138,12 @@ input[type=number]{width:10rem;font-family:var(--f-mono)}
 @keyframes aparece{from{opacity:0}}@keyframes sube{from{transform:translateY(24px);opacity:0}}
 .grande{font-family:var(--f-mono);font-size:2.4rem;font-variant-numeric:tabular-nums;color:var(--giemsa);line-height:1.1}
 .pie{font-size:.78rem;color:var(--muted);text-align:center}
+.ranking{list-style:none;margin:6px 0 0;padding:0;display:flex;flex-direction:column;gap:4px}
+.ranking li{display:grid;grid-template-columns:1.8rem 1fr auto;gap:8px;align-items:center;padding:6px 8px;border:1px solid var(--line);border-radius:8px}
+.ranking li.yo{background:var(--giemsa-bg);border-color:var(--giemsa)}
+.ranking .equipo-r{text-align:left;display:flex;flex-direction:column;align-items:flex-start;min-width:0;overflow-wrap:anywhere}
+.ranking small{color:var(--muted);font-size:.72rem}
+.ranking .lugar{color:var(--muted);text-align:center}
 @media (max-width:420px){.cartas{grid-template-columns:1fr}.barra-fila{grid-template-columns:4.6rem 1fr 1.6rem;font-size:.72rem}}
 @media (prefers-reduced-motion: reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -1152,6 +1158,88 @@ const senal = s => `<span class="senal" style="left:${s.x}%;top:${s.y}%;width:${
 
 </script>
 <script>
+// Ranking de la clase: cada equipo manda su puntaje final a un tema de ntfy.sh y todos leen la misma lista.
+// ntfy guarda los mensajes ~12 h y solo deja añadir (no editar), así dos equipos que terminan a la vez no se pisan.
+// Se escucha con una sola conexión abierta (SSE) y no consultando cada pocos segundos: en el wifi de la escuela
+// todos los celulares salen con la misma IP y ntfy limita las peticiones por IP.
+// Cualquiera con el tema puede escribir: por eso se escapan los nombres y se descartan puntajes imposibles.
+
+const RANKING = (() => {
+  const TEMA = new URLSearchParams(location.search).get("tema") || "guardia-malaria-qfb-uv-5nov2026-k7q2";
+  const URL_TEMA = `https://ntfy.sh/${TEMA}`;
+  const ESCUCHA_MS = 4 * 60 * 1000, MAX_FILAS = 25; // tras 4 min se cierra para liberar conexiones
+  let enviado = false, fuente = null, cierre = null, listo = false, aviso = "";
+  const mejor = new Map(); // nombre en minúsculas → mejor puntaje
+
+  const escapar = t => String(t).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const clave = n => n.trim().toLowerCase();
+  const miNombre = () => (estado.equipo || "Equipo sin nombre").slice(0, 40);
+
+  async function enviar(){
+    if (enviado) return;
+    enviado = true; // se marca antes para no mandar dos veces si se redibuja la pantalla
+    const total = totalPuntos();
+    const vivos = Object.values(estado.resultados).filter(r => r.vivo).length;
+    const yo = { n: miNombre(), p: total, r: rango(total), v: vivos };
+    agregar(yo); // se ve de inmediato aunque la red tarde
+    try {
+      // text/plain evita la petición previa de CORS.
+      const r = await fetch(URL_TEMA, { method: "POST", headers: { "Content-Type": "text/plain" }, body: JSON.stringify(yo) });
+      if (!r.ok) throw new Error(r.status);
+    } catch { enviado = false; aviso = "No se pudo enviar tu puntaje. Toca «Actualizar ranking» para reintentar."; pintar(); }
+  }
+
+  function agregar(m){
+    const tope = CASOS.reduce((a, c) => a + maximoCaso(c), 0);
+    if (!m || typeof m.n !== "string" || !m.n.trim() || !Number.isFinite(m.p) || m.p < 0 || m.p > tope) return;
+    const k = clave(m.n);
+    if (!mejor.has(k) || mejor.get(k).p < m.p) mejor.set(k, m);
+  }
+
+  function escuchar(){
+    if (fuente) return;
+    fuente = new EventSource(`${URL_TEMA}/sse?since=all`);
+    fuente.onopen = () => { listo = true; aviso = ""; pintar(); };
+    fuente.onmessage = e => { try { agregar(JSON.parse(JSON.parse(e.data).message)); } catch {} pintar(); };
+    fuente.onerror = () => { listo = true; aviso = "Conexión inestable con el ranking; se reintenta sola."; pintar(); };
+    clearTimeout(cierre);
+    cierre = setTimeout(callar, ESCUCHA_MS);
+  }
+  function callar(){
+    fuente?.close(); fuente = null; clearTimeout(cierre);
+    if (estado.vista === "final"){ aviso = "El ranking dejó de actualizarse solo. Toca «Actualizar ranking»."; pintar(); }
+  }
+
+  function html(){
+    if (!listo && !mejor.size) return `<p class="muted">Cargando el ranking…</p>`;
+    const filas = [...mejor.values()].sort((a, b) => b.p - a.p);
+    if (!filas.length) return `<p class="muted">Aún no hay puntajes.</p>`;
+    const yo = clave(miNombre()), lugar = filas.findIndex(f => clave(f.n) === yo);
+    return `${lugar >= 0 ? `<p class="sub">Tu lugar: <b>${lugar + 1}.º de ${filas.length}</b></p>` : ""}
+      <ol class="ranking">${filas.slice(0, MAX_FILAS).map((f, i) =>
+        `<li class="${clave(f.n) === yo ? "yo" : ""}"><span class="lugar mono">${i + 1}</span>
+          <span class="equipo-r">${escapar(f.n)}<small>${escapar(f.r || "")} · ${Number(f.v) || 0}/3 pacientes</small></span>
+          <b class="mono">${f.p}</b></li>`).join("")}</ol>`;
+  }
+
+  function pintar(){
+    const caja = document.getElementById("ranking");
+    if (caja) caja.innerHTML = html() + (aviso ? `<p class="muted">${aviso}</p>` : "");
+  }
+
+  return {
+    // Se llama cada vez que se dibuja la pantalla final.
+    montar(){ pintar(); enviar(); escuchar(); },
+    actualizar(){ callar(); aviso = ""; enviar(); escuchar(); pintar(); },
+    // Al salir de la pantalla final o jugar otra vez.
+    reiniciar(){ enviado = false; callar(); },
+    marco: () => `<section class="panel"><h3>Ranking de la clase</h3><div id="ranking"></div>
+      <button class="btn sec chico" data-accion="ranking">Actualizar ranking</button></section>`
+  };
+})();
+
+</script>
+<script>
 // Pantallas del juego y manejo de toques. Lee `estado` (motor.js) y delega cada paso a MINI (minijuegos.js).
 
 const $app = document.getElementById("app");
@@ -1297,13 +1385,14 @@ function vistaFinal(){
     <p class="muted">Pacientes que salieron adelante: ${vivos} de ${CASOS.length}.</p></section>
   <section class="panel">${CASOS.map(c => { const r = estado.resultados[c.id];
     return `<div class="row entre"><span><i>${c.especie}</i> · ${c.paciente}</span><b class="mono">${r.vivo ? r.puntos + " pts" : "falleció"}</b></div>`; }).join("")}</section>
+  ${RANKING.marco()}
   <section class="panel"><h3>Resumen para el examen</h3><ul class="perlas">
     <li>P. falciparum: anillo delicado, eritrocito normal, infección múltiple, media luna. Grave: artesunato IV.</li>
     <li>P. vivax: eritrocito grande, ameboide, Schüffner, hipnozoíto. Sangre + antirrecaída.</li>
     <li>P. ovale: eritrocito oval y festoneado, compacto, Schüffner, hipnozoíto.</li>
     <li>P. malariae: banda, pigmento oscuro, roseta, fiebre cuartana, síndrome nefrótico.</li>
     <li>Antes de primaquina o tafenoquina: G6PD y embarazo.</li></ul></section>
-  <p class="pie">Toma captura de esta pantalla y compártela con tu profesor.</p>
+  <p class="pie">El ranking se actualiza solo durante unos minutos; luego usa «Actualizar ranking».</p>
   <button class="btn sec" data-accion="reiniciar">Jugar otra vez</button>`;
 }
 
@@ -1312,6 +1401,7 @@ const VISTAS = { inicio: vistaInicio, menu: vistaMenu, caso: vistaCaso, "fin-cas
 function dibujar(arriba = false){
   $app.innerHTML = VISTAS[estado.vista]();
   if (estado.vista === "caso"){ const p = pasoActual(); MINI[p.tipo].montar?.(p); }
+  if (estado.vista === "final") RANKING.montar();
   document.querySelector(".dialogo .btn")?.focus();
   if (arriba) window.scrollTo(0, 0);
 }
@@ -1326,10 +1416,13 @@ $app.addEventListener("click", e => {
   const el = e.target.closest("[data-accion]"); if (!el || el.disabled) return;
   const a = el.dataset.accion;
   if (a === "enfocar") return;
+  // Sin nombre, todos los equipos anónimos se juntarían en una sola fila del ranking.
+  if (a === "menu" && estado.vista === "inicio" && !estado.equipo){ const i = document.getElementById("equipo"); i.placeholder = "Escribe el nombre de tu equipo"; return i.focus(); }
   if (a === "menu"){ estado.vista = "menu"; return dibujar(true); }
   if (a === "caso"){ iniciarCaso(el.dataset.id); return dibujar(true); }
   if (a === "final"){ estado.vista = "final"; return dibujar(true); }
-  if (a === "reiniciar"){ Object.assign(estado, { vista: "inicio", resultados: {} }); return dibujar(true); }
+  if (a === "ranking") return RANKING.actualizar();
+  if (a === "reiniciar"){ Object.assign(estado, { vista: "inicio", resultados: {} }); RANKING.reiniciar(); return dibujar(true); }
   if (a === "continuar"){ continuar(); return dibujar(true); }
   if (a === "cerrar-int"){ const pasa = estado.ultimo?.irreversible || estado.barras.s <= 0; cerrarInterludio(); return dibujar(pasa); }
   if (estado.vista === "caso"){ const p = pasoActual(); MINI[p.tipo].accion(p, a, el, e); dibujar(); }
