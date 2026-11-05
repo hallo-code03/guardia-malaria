@@ -115,6 +115,8 @@ input[type=number]{width:10rem;font-family:var(--f-mono)}
 .orden li{display:flex;gap:8px;align-items:flex-start;background:var(--giemsa-bg);color:var(--ink);border-radius:10px;padding:8px 10px;font-size:.92rem}
 .orden li.vacio{background:var(--bg);color:var(--muted)}
 .orden .n{font-family:var(--f-mono);color:var(--giemsa);font-weight:700}
+.orden .t{flex:1}
+.orden .quitar{flex:none;min-width:32px;min-height:32px;margin:-4px -4px -4px 0;border:1px solid var(--line);border-radius:8px;background:var(--panel);color:var(--bad);font-size:.9rem;cursor:pointer}
 .pendientes{display:flex;flex-direction:column;gap:6px}
 .chip-paso{text-align:left;background:var(--bg);border:1px dashed var(--muted);border-radius:10px;padding:10px 12px;font-size:.92rem}
 .mini-lista{margin:6px 0 0;padding-left:20px}
@@ -979,11 +981,13 @@ const MINI = {
   orden: {
     html(p){
       const elegidos = estado.mini.orden || [], vista = revolver(p.items, semillaDe(p.id));
-      const lista = elegidos.map((i, n) => `<li><span class="n">${n + 1}</span>${p.items[i].t}</li>`).join("");
+      const quitar = n => estado.respondido ? "" :
+        `<button class="quitar" data-accion="quitar" data-n="${n}" aria-label="Quitar este paso">✕</button>`;
+      const lista = elegidos.map((i, n) => `<li><span class="n">${n + 1}</span><span class="t">${p.items[i].t}</span>${quitar(n)}</li>`).join("");
       const pendientes = vista.filter(i => !elegidos.includes(i))
         .map(i => `<button class="chip-paso" data-accion="tomar" data-i="${i}">${p.items[i].t}</button>`).join("");
       const listo = elegidos.length === p.items.length;
-      return `<ol class="orden">${lista || `<li class="vacio">Toca los pasos de abajo en el orden correcto.</li>`}</ol>
+      return `<ol class="orden">${lista || `<li class="vacio">Toca los pasos de abajo en el orden correcto. Con ✕ quitas uno para cambiarlo.</li>`}</ol>
         <div class="pendientes">${pendientes}</div>
         <div class="row">${elegidos.length && !estado.respondido ? `<button class="btn sec chico" data-accion="borrar">Empezar de nuevo</button>` : ""}
         ${listo && !estado.respondido ? `<button class="btn chico" data-accion="revisar">Revisar orden</button>` : ""}</div>`;
@@ -993,6 +997,7 @@ const MINI = {
       if (estado.respondido) return;
       if (a === "tomar") (m.orden ||= []).push(+el.dataset.i);
       if (a === "borrar") m.orden = [];
+      if (a === "quitar") m.orden.splice(+el.dataset.n, 1); // el paso vuelve a la lista de abajo
       if (a !== "revisar") return;
       const mal = m.orden.findIndex((v, i) => v !== i);
       if (mal < 0) return resolver({ nivel: "mejor", fb: p.fb });
